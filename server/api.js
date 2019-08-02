@@ -1,5 +1,3 @@
-// https://www.mono-project.com/docs/getting-started/install/linux/
-
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const apigClientFactory = require('aws-api-gateway-client').default;
@@ -9,6 +7,7 @@ require('dotenv').config();
 const config = {
   invokeUrl: process.env.AWS_API_URL,
   accessKey: process.env.AWS_ACCESS_KEY_ID,
+  apiKey:    process.env.AWS_API_KEY,
   secretKey: process.env.AWS_SECRET_ACCESS_KEY,
   region:    process.env.AWS_API_REGION,
 };
@@ -42,10 +41,10 @@ app.post('/api/upload_rom', fileConfig, async (req, res, next) => {
 
     if (req.files) {
       const { data } = await randoApi.invokeApi({}, process.env.AWS_API_PATH, 'POST', {}, { rom: req.files.rom });
-      console.log(data);
-    
-      const romOk = !!req.files.rom;
-      res.status(200).send(romOk);
+      // const file = new File(data.body, 'tmcrando.gba');
+      // // console.log(file);
+      // res.status(200).sendFile(file);
+      res.sendStatus(200);
     }
   } catch (e) {
     console.error(e);

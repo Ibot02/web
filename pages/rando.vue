@@ -7,10 +7,10 @@
       <span>
         Rando seed generation page! Someday this will hooked up c:
       </span>
-      <!-- <form
+      <form
         ref="romInputForm"
         class="rom-upload"
-        @submit.prevent="uploadTest">
+        @submit.prevent="uploadTest()">
         <label for="rom">
           Upload your Minish Cap .gba file
         </label>
@@ -22,7 +22,7 @@
         <input
           class="rom-submit"
           type="submit"
-          value="Submit" />
+          value="Generate Seed" />
       </form>
       <span v-if="loading">
         Loading...
@@ -32,7 +32,7 @@
       </span>
       <span v-if="uploadFail">
         Upload fail... :c
-      </span> -->
+      </span>
     </section>
   </main>
 </template>
@@ -67,7 +67,7 @@
     },
 
     mounted() {
-      // this.checkTest();
+      this.checkTest();
     },
 
     methods: {
@@ -77,7 +77,8 @@
         const formData = new FormData();
         formData.append('rom', file);
         try {
-          await this.$axios.$post('api/upload_rom', formData, headerData);
+          const randod = await this.$axios.$post('api/upload_rom', formData, headerData);
+          console.info(randod);
           this.uploadOk = true;
           await this.$localForage.setItem('rom', file);
           this.$refs.romInputForm.reset();
@@ -97,7 +98,7 @@
         console.log(file);
         const formData = new FormData();
         formData.append('rom', file);
-        await this.$axios.$post('api/check_rom', formData, headerData);
+        // await this.$axios.$post('api/check_rom', formData, headerData);
       },
     },
   };
